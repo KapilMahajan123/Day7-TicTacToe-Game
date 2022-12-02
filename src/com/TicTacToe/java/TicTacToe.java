@@ -1,6 +1,6 @@
 package com.TicTacToe.java;
 
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * 
@@ -72,26 +72,42 @@ public class TicTacToe {
 		 		 {
 		 			 System.out.println("Invalid Choice");
 		 		 }
-	    }
+		 	 }
 	     
-		 /*
-	      * the isEmpty is an inbuilt method 
-	      * boolean value is returned by the isEmpty method
-	      * Check whether is the given string empty or not
-	      * 
-	      */
-	    public static boolean isEmpty() {
+		 	 /*
+		 	  * the isEmpty is an inbuilt method 
+		 	  * boolean value is returned by the isEmpty method
+		 	  * Check whether is the given string empty or not 
+		 	  */
+		 	 public static boolean isEmpty() {
 		       if (board[playLocation] == ' ') {
 		            return true;      
 		       } else {
 		            return false;
 		       }
-	    }   
+	       }
+		 	 /*
+		 	  * Tossing the coin to checking who won the first
+		 	  */
+		 	 public static void checkToss() {
+		 		 Random random = new Random();
+		 		 int tossResult = random.nextInt(2)+1;
+		 		 System.out.println("\nChoose 1 for Heads or 2 for Tails");
+		 		 int coinSelect = scannerObject.nextInt();
+		 		 
+		 		 if (coinSelect == tossResult) {
+		 			 System.out.println("\nPlayer Won The Toss! Player Starts");
+		 		 }else {
+		 			System.out.println("\nComputer Won The Toss! Computer Starts");
+		 		 }
+		 	 }
+		 	 
 
 	    public static void main(String[] args)
 	    {
 
 	        System.out.println("Welcome To Tic Tac Toe");
+	        checkToss();
 	        createBoard();
 	        getPlayerChoice();
 	        showBoard();
