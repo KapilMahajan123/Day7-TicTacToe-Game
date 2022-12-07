@@ -169,6 +169,7 @@ public class TicTacToe {
             System.out.println("");
         }
     }
+	
     /**
      * this checkusercanwin will fetch all possibilities.
      * then conclude the result as player can win from computer
