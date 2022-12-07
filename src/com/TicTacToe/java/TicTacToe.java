@@ -9,191 +9,211 @@ import java.util.*;
  */
 public class TicTacToe {
 
-		public TicTacToe() {
-			System.out.println("Welcome to Tic Tac Toe Game !!!");
-		}
+    /**
+     * here scanner will take input and taken two variables having char datatype.
+     * created a board of size 10
+     */
+    private static final Scanner scanner=new Scanner(System.in);
+    private char board[]=new char[10];
+    private char usersymbol,computersymbol;
+    private int player = 0;
+    private char emptyspace = ' ';
 
-		/*
-		 *  Declaring variables
-		 *  taking array of the board
-		 *  This game has two player x and o
-		 */
-		static char[] board = new char[10];
-		static char player, computer;       
-		static int playerLocation, computerLocation;   
-		static int toss;
-		static boolean computerFlag = false, playerFlag = false;
-		static Scanner scanner = new Scanner(System.in);
-		static Random random = new Random();
+    TicTacToeGame(){
+        /**
+         * inside the constructor am calling createboard method.
+         * making toss to start play---it'll decide who will play first.
+         * calling takeUserInput method
+         */
 
-		public static void main(String[] args) {
+        createBoard();
+        tossForFirstPlay();
+        takeUserInput();
+    }
 
-			// Initialize the object
-			TicTacToe object = new TicTacToe();
+    /**
+     * created a method named createboard.
+     * it will iterate this forloop from 1 to 10.
+     * Board valus assigned empty space.
+     */
+    private void createBoard(){
+        for(int count=1;count<10;count++){
+            board[count]=' ';
+        }
+    }
 
-			initialize();
-			showBoard();
-			chooseOption();
-			toss();
-			if (computerFlag == true) {
-				System.out.println("Now Player's Turn");
-				playerMove();
-				computerFlag = false;
-				playerFlag = true;
-			} else if (playerFlag == true) {
-				System.out.println("Now Computer's Turn");
-				computerMove();
-				playerFlag = false;
-				computerFlag = true;
-			}
-			checkGame();
-			System.out.println("Turn Changed");
+    /**
+     * It'll take user input 'x' and '0'.
+     * Compare those to assign the values whether it's computersymbol or usersymbol.
+     */
+    private void takeUserInput(){
+        System.out.println("Your turn:(Choose x or o) ");
+        String symbol=scanner.next();
+        if (symbol.equals("x")){
+            usersymbol= 'x';
+            computersymbol='o';
+        }else if (symbol.equals("o")){
+            usersymbol='o';
+            computersymbol='x';
+        }else{
+            System.out.println("invalid option");
+        }
+    }
+    /**
+     * this showBoard method is showing the empty board of 3*3 matrices.
+     * inside this board it'll take the board values assigned empty space.
+     */
 
-		}
+    private void showBoard(){
+        String horizontalPart = "+---+---+---+";
+        for (int row = 0; row < 3; row++) {
+            System.out.println(horizontalPart);
+            for (int coloumn = 1; coloumn < 4; coloumn++) {
+                System.out.print("| " + board[row * 3 + coloumn] + " ");
+            }
+            System.out.print("|\n");
+        }
+        System.out.print(horizontalPart);
+        System.out.print("\n");
+    }
+    /**
+     * this makeMove method will take user input from 1 to 9 place your move on the given input.
+     * if player==0 then it'll assign the value as given by computer.
+     */
+    public boolean makeMove(int index, int player) {
+        if (board[index] == ' ') {
+            if (player == 0) {
+                System.out.println("Computer played: ");
+                board[index] = computersymbol;
+            } else {
+                System.out.println("Player played: ");
+                board[index] = usersymbol;
+            }
+            showBoard();
+            checkWin();
+            return false;
+        } else {
+            return true;
+        }
+    }
+    /**
+     * this tossForFirstPlay method will get the input from user and check whether it's a head or tail by using random function
+     */
+    public void tossForFirstPlay() {
+        int player;
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("Enter Toss (H or T):");
+        String toss=sc.next();
+        int i = (int) Math.round(Math.random()) % 2;
+        if ((i == 1 && toss.equals("H")) || (i == 0 && toss.equals("T"))) {
+            System.out.println("Congratulations! You've won the Toss.");
+            player = 1;
+        } else {
+            System.out.println("You've lost Toss. Computer plays first.");
+            player = 0;
+        }
+    }
+    public void playGame() {
+        int index;
+        for (index = 0; index < 9; index++) {
+            if (player == 0) {
+                computerPlay();
+                player = 1;
+            } else {
+		checkUserCanWin();
+                System.out.println("Select Position (1-9): ");
+                while (makeMove(scanner.nextInt(), player)) {
+                    System.out.println("Try different place.");
+                }
+                player = 0;
+            }
+        }
+        if (index == 9) {
+            System.out.println("Game Draw!");
+            System.exit(0);
+        }
+    }
 
-		// Initialize
-		public static void initialize() {
-			for (int i = 1; i < 10; i++) {
-				board[i] = ' ';
-			}
-		}
+    /**
+     * this checkWin method will check all the possible winning chances...
+     */
+    public void checkWin() {
+        if ((board[1] == usersymbol && board[2] == usersymbol && board[3] == usersymbol) ||
+                (board[4] == usersymbol && board[5] == usersymbol && board[6] == usersymbol) ||
+                (board[7] == usersymbol && board[8] == usersymbol && board[9] == usersymbol) ||
+                (board[1] == usersymbol && board[4] == usersymbol && board[7] == usersymbol) ||
+                (board[2] == usersymbol && board[5] == usersymbol && board[8] == usersymbol) ||
+                (board[3] == usersymbol && board[6] == usersymbol && board[9] == usersymbol) ||
+                (board[1] == usersymbol && board[5] == usersymbol && board[9] == usersymbol) ||
+                (board[3] == usersymbol && board[5] == usersymbol && board[7] == usersymbol)) {
+            System.out.println("Player Wins!");
+            System.exit(0);
+        }
 
-		/*
-		 * Doing a toss for playing first
-		 */
-		public static void toss() {
-			toss = random.nextInt(2);
-			switch (toss) {
-			case 0:
-				System.out.println("Flipping Tail.\nComputer starts first.");
-				computerMove();// Computer move
-				computerFlag = true;
-				break;
-			case 1:
-				System.out.println("Flipping Head.\nPlayer starts first.");
-				playerMove();// Player move
-				playerFlag = true;
-				break;
-			}
-		}
+        if ((board[1] == computersymbol && board[2] == computersymbol && board[3] == computersymbol) ||
+                (board[4] == computersymbol && board[5] == computersymbol && board[6] == computersymbol) ||
+                (board[7] == computersymbol && board[8] == computersymbol && board[9] == computersymbol) ||
+                (board[1] == computersymbol && board[4] == computersymbol && board[7] == computersymbol) ||
+                (board[2] == computersymbol && board[5] == computersymbol && board[8] == computersymbol) ||
+                (board[3] == computersymbol && board[6] == computersymbol && board[9] == computersymbol) ||
+                (board[1] == computersymbol && board[5] == computersymbol && board[9] == computersymbol) ||
+                (board[3] == computersymbol && board[5] == computersymbol && board[7] == computersymbol)) {
+            System.out.println("Player Lost!");
+            System.exit(0);
+        }
 
-		/*
-		 *  Allow player to choose X or O
-		 */
-		public static void chooseOption() {
-			System.out.println("Please Select Your Choice Letter : \nProvide 'X' or 'O'");
-			player = check();
-			System.out.println("Player choosing option : " + player);
-		}
+    }
 
-		public static char check()
-		{
-			char choice = scanner.next().charAt(0);
-			if (choice == 'X' || choice == 'x') {
-				player = 'X';
-				computer = 'O';
-			} else if (choice == 'O' || choice == 'o') {
-				player = 'O';
-				computer = 'X';
-			} else {
-				System.out.println("Invalid option.\nProvide the valid one");
-				check();
-			}
-			return player;
-		}
+    private void computerPlay() {
+        // TODO: Implementation computer playing logic
+        while (makeMove((int) (Math.random() * 8) + 1, 0)) {
+            System.out.println("");
+        }
+    }
+    /**
+     * this checkusercanwin will fetch all possibilities.
+     * then conclude the result as player can win from computer
+     */
+     private void checkUserCanWin() {
+        if ((board[1] == usersymbol && board[2] == usersymbol && board[3] == emptyspace) ||
+                (board[4] == usersymbol && board[5] == usersymbol && board[6] == emptyspace) ||
+                (board[7] == usersymbol && board[8] == usersymbol && board[9] == emptyspace) ||
+                (board[1] == usersymbol && board[4] == usersymbol && board[7] == emptyspace) ||
+                (board[2] == usersymbol && board[5] == usersymbol && board[8] == emptyspace) ||
+                (board[3] == usersymbol && board[6] == usersymbol && board[9] == emptyspace) ||
+                (board[1] == usersymbol && board[5] == usersymbol && board[9] == emptyspace) ||
+                (board[3] == usersymbol && board[5] == usersymbol && board[7] == emptyspace) ||
+                (board[1] == emptyspace && board[2] == usersymbol && board[3] == usersymbol) ||
+                (board[4] == emptyspace && board[5] == usersymbol && board[6] == usersymbol) ||
+                (board[7] == emptyspace && board[8] == usersymbol && board[9] == usersymbol) ||
+                (board[1] == emptyspace && board[4] == usersymbol && board[7] == usersymbol) ||
+                (board[2] == emptyspace && board[5] == usersymbol && board[8] == usersymbol) ||
+                (board[3] == emptyspace && board[6] == usersymbol && board[9] == usersymbol) ||
+                (board[1] == emptyspace && board[5] == usersymbol && board[9] == usersymbol) ||
+                (board[3] == emptyspace && board[5] == usersymbol && board[7] == usersymbol) ||
+                (board[1] == usersymbol && board[2] == emptyspace && board[3] == usersymbol) ||
+                (board[4] == usersymbol && board[5] == emptyspace && board[6] == usersymbol) ||
+                (board[7] == usersymbol && board[8] == emptyspace && board[9] == usersymbol) ||
+                (board[1] == usersymbol && board[4] == emptyspace && board[7] == usersymbol) ||
+                (board[2] == usersymbol && board[5] == emptyspace && board[8] == usersymbol) ||
+                (board[3] == usersymbol && board[6] == emptyspace && board[9] == usersymbol) ||
+                (board[1] == usersymbol && board[5] == emptyspace && board[9] == usersymbol) ||
+                (board[3] == usersymbol && board[5] == emptyspace && board[7] == usersymbol)){
+            System.out.println("Player can Win! from Computer");
+        }
 
-		/*
-		 * To displaying tic tac toe board
-		 */
-		public static void showBoard() {
-			System.out.println(board[1] + " | " + board[2] + " | " + board[3]);
-			System.out.println("---------");
-			System.out.println(board[4] + " | " + board[5] + " | " + board[6]);
-			System.out.println("---------");
-			System.out.println(board[7] + " | " + board[8] + " | " + board[9]);
-		}
+    }
 
-		/*
-		 * player is going to make a move to the desired location
-		 * if it is not in range from 1 to 9
-		 * then it will show you an invalid input
-		 */
-		public static void playerMove() {
-			checkFreeSpace();
-			System.out.println("Enter the position between (1-9) you want to make your move :");
-			playerLocation = scanner.nextInt();
-			if (playerLocation > 0 && playerLocation < 10) {
-				if (board[playerLocation] == ' ') {
-					board[playerLocation] = player;
-					showBoard();
-				} else if (board[playerLocation] != ' ') {
-					System.err.println("Sorry! Position is already choosen. Enter a valid position");
-					showBoard();
-					playerMove();
-					showBoard();
-				}
-			} else {
-				System.err.println("Invalid choice. Provide a valid position between (1-9)");
-				playerMove();
-			}
-		}
+    /**
+     * Here i have created a main method to execute the program.
+     * an object got created named tictactoe.which called the following methods.
+     * @param args
+     */
+    public static void main(String[]args){
+        TicTacToe tictactoe=new TicTacToe(); //created object for class TicTacToeGame
+        tictactoe.showBoard();
+        tictactoe.playGame();
 
-		// To make the computer move
-		public static void computerMove() {
-			computerLocation = random.nextInt(8) + 1;
-			if (computerLocation > 0 && computerLocation < 10) {
-				if (board[computerLocation] == ' ') {
-					board[computerLocation] = computer;
-					showBoard();
-				} else if (board[computerLocation] != ' ') {
-					computerMove();
-				}
-			}
-		}
-
-		// To check free space
-		public static void checkFreeSpace() {
-			boolean isSpaceAvailable = false;
-			int numOfFreeSpaces = 0;
-			for (int index = 1; index < board.length; index++) {
-				if ((board[index] == ' ')) {
-					isSpaceAvailable = true;
-					numOfFreeSpaces++;
-				}
-			}
-			if (isSpaceAvailable == false) {
-				System.err.println("Board is full! You can't make another move");
-			} else {
-				System.out.println("Free space is available! you have " + numOfFreeSpaces + " moves left");
-			}
-		}
-		
-		//To check 
-	    public static void checkGame()
-	    {
-	        if ((board[1] == player && board[2] == player || board[2] == player && board[3] == player || board[1] == player && board[3] == player) ||
-	           (board[4] == player && board[5] == player || board[5] == player && board[6] == player || board[4] == player && board[6] == player) ||
-	           (board[7] == player && board[8] == player || board[8] == player && board[9] == player || board[7] == player && board[9] == player) ||
-	           (board[1] == player && board[5] == player || board[5] == player && board[9] == player || board[1] == player && board[9] == player) ||
-	           (board[3] == player && board[5] == player || board[5] == player && board[7] == player || board[3] == player && board[7] == player) ||
-	           (board[1] == player && board[4] == player || board[4] == player && board[7] == player || board[1] == player && board[7] == player) ||
-	           (board[2] == player && board[5] == player || board[5] == player && board[8] == player || board[2] == player && board[8] == player) ||
-	           (board[3] == player && board[6] == player || board[6] == player && board[9] == player || board[3] == player && board[9] == player))
-	        {
-	            System.out.println("Player going to win");
-	        }
-	        else if ((board[1] == computer && board[2] == computer || board[2] == computer && board[3] == computer || board[1] == computer && board[3] == computer) ||
-	                (board[4] == computer && board[5] == computer || board[5] == computer && board[6] == computer || board[4] == computer && board[6] == computer) ||
-	                (board[7] == computer && board[8] == computer || board[8] == computer && board[9] == computer || board[7] == computer && board[9] == computer) ||
-	                (board[1] == computer && board[5] == computer || board[5] == computer && board[9] == computer || board[1] == computer && board[9] == computer) ||
-	                (board[3] == computer && board[5] == computer || board[5] == computer && board[7] == computer || board[3] == computer && board[7] == computer) ||
-	                (board[1] == computer && board[4] == computer || board[4] == computer && board[7] == computer || board[1] == computer && board[7] == computer) ||
-	                (board[2] == computer && board[5] == computer || board[5] == computer && board[8] == computer || board[2] == computer && board[8] == computer) ||
-	                (board[3] == computer && board[6] == computer || board[6] == computer && board[9] == computer || board[3] == computer && board[9] == computer))
-	        {
-				System.out.println("Computer going to win");
-			} else
-				System.out.println("It may be a tie.");
-		}
-
+    }
+    
 }
