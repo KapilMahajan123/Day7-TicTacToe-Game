@@ -8,7 +8,8 @@ import java.util.*;
  *
  */
 public class TicTacToe {
-    /**
+
+  /**
      * here scanner will take input and taken two variables having char datatype.
      * created a board of size 10
      */
@@ -180,4 +181,3 @@ public class TicTacToe {
     }
     
 }
-
