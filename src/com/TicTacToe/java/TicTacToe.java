@@ -181,9 +181,10 @@ public class TicTacToe {
 			System.out.println("Computer going to win");
 		} else
 			System.out.println("It may be a tie.");
-	}
+	    }
 
-}showBoard();
+	 }      showBoard();
 		madeMove(true);
-	}
+      	}
+
 }
