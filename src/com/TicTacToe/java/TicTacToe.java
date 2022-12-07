@@ -8,7 +8,7 @@ import java.util.*;
  *
  */
 public class TicTacToe {
-    /**
+   /**
      * here scanner will take input and taken two variables having char datatype.
      * created a board of size 10
      */
@@ -16,6 +16,8 @@ public class TicTacToe {
     private char board[]=new char[10];
     private char usersymbol,computersymbol;
     private int player = 0;
+    private char emptyspace = ' ';
+
     TicTacToeGame(){
         /**
          * inside the constructor am calling createboard method.
@@ -111,12 +113,13 @@ public class TicTacToe {
         }
     }
     public void playGame() {
-        int i;
-        for (i = 0; i < 9; i++) {
+        int index;
+        for (index = 0; index < 9; index++) {
             if (player == 0) {
                 computerPlay();
                 player = 1;
             } else {
+		checkUserCanWin();
                 System.out.println("Select Position (1-9): ");
                 while (makeMove(scanner.nextInt(), player)) {
                     System.out.println("Try different place.");
@@ -124,7 +127,7 @@ public class TicTacToe {
                 player = 0;
             }
         }
-        if (i == 9) {
+        if (index == 9) {
             System.out.println("Game Draw!");
             System.exit(0);
         }
@@ -166,6 +169,39 @@ public class TicTacToe {
             System.out.println("");
         }
     }
+    /**
+     * this checkusercanwin will fetch all possibilities.
+     * then conclude the result as player can win from computer
+     */
+     private void checkUserCanWin() {
+        if ((board[1] == usersymbol && board[2] == usersymbol && board[3] == emptyspace) ||
+                (board[4] == usersymbol && board[5] == usersymbol && board[6] == emptyspace) ||
+                (board[7] == usersymbol && board[8] == usersymbol && board[9] == emptyspace) ||
+                (board[1] == usersymbol && board[4] == usersymbol && board[7] == emptyspace) ||
+                (board[2] == usersymbol && board[5] == usersymbol && board[8] == emptyspace) ||
+                (board[3] == usersymbol && board[6] == usersymbol && board[9] == emptyspace) ||
+                (board[1] == usersymbol && board[5] == usersymbol && board[9] == emptyspace) ||
+                (board[3] == usersymbol && board[5] == usersymbol && board[7] == emptyspace) ||
+                (board[1] == emptyspace && board[2] == usersymbol && board[3] == usersymbol) ||
+                (board[4] == emptyspace && board[5] == usersymbol && board[6] == usersymbol) ||
+                (board[7] == emptyspace && board[8] == usersymbol && board[9] == usersymbol) ||
+                (board[1] == emptyspace && board[4] == usersymbol && board[7] == usersymbol) ||
+                (board[2] == emptyspace && board[5] == usersymbol && board[8] == usersymbol) ||
+                (board[3] == emptyspace && board[6] == usersymbol && board[9] == usersymbol) ||
+                (board[1] == emptyspace && board[5] == usersymbol && board[9] == usersymbol) ||
+                (board[3] == emptyspace && board[5] == usersymbol && board[7] == usersymbol) ||
+                (board[1] == usersymbol && board[2] == emptyspace && board[3] == usersymbol) ||
+                (board[4] == usersymbol && board[5] == emptyspace && board[6] == usersymbol) ||
+                (board[7] == usersymbol && board[8] == emptyspace && board[9] == usersymbol) ||
+                (board[1] == usersymbol && board[4] == emptyspace && board[7] == usersymbol) ||
+                (board[2] == usersymbol && board[5] == emptyspace && board[8] == usersymbol) ||
+                (board[3] == usersymbol && board[6] == emptyspace && board[9] == usersymbol) ||
+                (board[1] == usersymbol && board[5] == emptyspace && board[9] == usersymbol) ||
+                (board[3] == usersymbol && board[5] == emptyspace && board[7] == usersymbol)){
+            System.out.println("Player can Win! from Computer");
+        }
+
+    }
 
     /**
      * Here i have created a main method to execute the program.
@@ -178,5 +214,5 @@ public class TicTacToe {
         tictactoe.playGame();
 
     }
+    
 }
-
