@@ -8,7 +8,6 @@ import java.util.*;
  *
  */
 public class TicTacToe {
-	
     /**
      * here scanner will take input and taken two variables having char datatype.
      * created a board of size 10
@@ -101,7 +100,7 @@ public class TicTacToe {
         int player;
         Scanner scanner=new Scanner(System.in);
         System.out.println("Enter Toss (H or T):");
-        String toss=scanner.next();
+        String toss=sc.next();
         int i = (int) Math.round(Math.random()) % 2;
         if ((i == 1 && toss.equals("H")) || (i == 0 && toss.equals("T"))) {
             System.out.println("Congratulations! You've won the Toss.");
@@ -170,6 +169,7 @@ public class TicTacToe {
 
     /**
      * Here i have created a main method to execute the program.
+     * an object got created named tictactoe.which called the following methods.
      * @param args
      */
     public static void main(String[]args){
@@ -179,3 +179,4 @@ public class TicTacToe {
 
     }
 }
+
