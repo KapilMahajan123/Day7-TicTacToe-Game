@@ -9,7 +9,7 @@ import java.util.*;
  */
 public class TicTacToe {
 
-   /**
+    /**
      * here scanner will take input and taken two variables having char datatype.
      * created a board of size 10
      */
@@ -277,6 +277,7 @@ public class TicTacToe {
             board[6]=computersymbol;
         }
     }
+    
     /**
      * Here i have created a main method to execute the program.
      * an object got created named tictactoe.which called the following methods.
